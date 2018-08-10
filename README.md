@@ -17,4 +17,4 @@ JBP - Numerical simulations of 2D flow between eccentrically rotating cylinder
 
 FPS - Numerical simulations of 2D flow past a sphere
 
-Test - Numerical sheme solution convergence test
+Test - Numerical scheme convergence test
