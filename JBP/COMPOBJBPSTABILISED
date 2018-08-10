@@ -1,0 +1,769 @@
+lambda_1=1.0*10E-2                  # Relaxation Time
+U =  1.0                     # Characteristic velocity
+
+#gammah=2*10E-10                  # SUPG Stabilsation Terms
+#gam =0.01
+
+
+thetat = 1.0*10E-20
+
+dt = 0.002  #Time Stepping  
+
+loopend=9
+j=0
+jj=0
+tol=10E-6
+while j < loopend:
+    j+=1
+
+    # Define trial and test functions
+    u = TrialFunction(V)
+    rho=TrialFunction(Q)
+    p = TrialFunction(Q)
+    T = TrialFunction(W)
+    v = TestFunction(V)
+    q = TestFunction(Q)
+    r = TestFunction(W)
+    tau = TrialFunction(Z)
+    R = TestFunction(Z)
+
+
+    #Define Discretised Functions
+    u00=Function(V) 
+    u0=Function(V)       # Velocity Field t=t^n
+    us=Function(V)       # Predictor Velocity Field 
+    u12=Function(V)      # Velocity Field t=t^n+1/2
+    u1=Function(V)       # Velocity Field t=t^n+1
+    irho0=Function(Q)
+    rho0=Function(Q)     # Density Field t=t^n
+    rho1=Function(Q)     # Density Field t=t^n+1
+    irho0=Function(Q)
+    irho1=Function(Q)
+    p00=Function(Q)      # Pressure Field t=t^n-1
+    p0=Function(Q)       # Pressure Field t=t^n
+    p1=Function(Q)       # Pressure Field t=t^n+1
+    mu=Function(W)       # Viscosity Field t=t^n
+    T00=Function(W) 
+    T0=Function(W)       # Temperature Field t=t^n
+    T1=Function(W)       # Temperature Field t=t^n+1
+    tau00=Function(Z)
+    tau0=Function(Z)     # Stress Field t=t^n
+    tau12=Function(Z)    # Stress Field t=t^n+1/2
+    tau1=Function(Z)     # Stress Field t=t^n+1
+
+    c0c0=Function(Q)
+    tauxx=Function(W)    # Normal Stress
+
+    D=TrialFunction(Z)   # DEVSS Articficial Diffusion 
+    D1=Function(Z)       # Terms
+
+
+
+    #print len(tau1.vector().array())/4
+    #print len(tauxx.vector().array())
+
+    tauxx_vec=tauxx.vector().array()
+    for i in range(len(tauxx.vector().array())):
+        tauxx_vec[i]=tau1.vector().array()[4*i]
+    tauxx.vector()[:]=tauxx_vec
+
+    #quit()
+
+
+    boundary_parts = FacetFunction("size_t", mesh1)
+    omega0.mark(boundary_parts,0)
+    omega1.mark(boundary_parts,1)
+    omega2.mark(boundary_parts,2)
+    omega3.mark(boundary_parts,3)
+    ds = Measure("ds")[boundary_parts]
+
+
+    # Set parameter values
+    h = mesh1.hmin()
+    #print(h) 
+    Tf = 20.0    #Final Time
+    Cv = 1000.0
+    Uv=Expression(('0.5*(1+tanh(5*t-4))','0'), t=0.0 ,U=U, d=d, degree=d)
+    mu_1 = 25.0*10E-1
+    mu_2 = 25.0*10E-1
+    mu_0 = mu_1+mu_2
+    Rc = 3.33*10E1
+    T_0 = 300.0 
+    T_h = 350.0      #Reference temperature
+    C=250.0 #Sutherland's Constant
+    kappa = 2.0
+    heatt= 0.00
+    rho_0=1000.0
+    Vh=0.01   #Viscous Heating Number
+    #lambda1=2.0*10E-2            #Relaxation Time
+    kappa = 2.0
+    heatt= 0.1
+    beta = 69*10E-2               # Thermal Expansion Coefficient
+    betav = mu_1/mu_0
+    alpha=1.0/(rho_0*Cv)
+    Bi=0.75
+    ms=1.0                          # Equation of State Parameter
+    Bs=20000.0                       # Equation of State Parameter
+    c0c0=ms*(p0+Bs)*irho0         # Speed of Sound Squared (Dynamic)
+    c0=1500.0                       # Speed of Sound (Static)
+    k = Constant(dt)
+
+    # Nondimensional Parameters
+
+    Re = rho_0*U*c/mu_0                                #Reynolds Number
+    We = lambda_1*U/c                                 #Weisenberg NUmber
+    Di=kappa/(rho_0*Cv*U*c)                         #Diffusion Number
+    Vh= U*mu_0/(rho_0*Cv*c*(T_h-T_0))               #Viscous Heating Number
+
+
+    # Steady State Method (Re-->10Re)
+    Ret=Expression('Re*(1.0+0.5*(1.0+tanh(0.3*t-4.0))*19.0)', t=0.0, Re=Re, d=d, degree=d)
+
+    Rey=10*Re
+
+    theta = (1.0-betav)           # DEVSS Stabilisation Terms
+
+
+        # Define boundary conditions
+    td= Constant('5')
+    e = Constant('6')
+    w=Expression('T_0+0.5*(1.0+tanh(e*t-2.5))*(T_h-T_0)', d=d, degree=d, t=0.0, e=e, T_0=T_0, T_h=T_h)
+    ulid=Expression(('U*0.5*(1.0+tanh(e*t-3.0))','0'), d=d, degree=d, t=0.0, U=U, e=e, T_0=T_0, T_h=T_h)
+    T_bl = Expression('T_0+(T_h-T_0)*sin((x[0]+x[1])*2*pi/L)', d=d, degree=d, T_0=T_0, T_h=T_h, pi=pi, L=L, B=B)
+    T_bb = Expression('T_0+(T_h-T_0)*sin((x[0]+x[1])*2*pi/B)', d=d, degree=d, T_0=T_0, T_h=T_h, pi=pi, L=L, B=B)
+
+
+    # Define unit Normal/tangent Vector at inner and outer Boundary (Method 2)
+    n0 =  Expression(('-1' , '0' ), d=d, degree=d)
+    n1 =  Expression(('0' , '1' ), d=d, degree=d)
+    n2 =  Expression(('1' , '0' ), d=d, degree=d)
+    n3 =  Expression(('0' , '-1' ), d=d, degree=d)
+
+     # Dirichlet Boundary Conditions  (LID DRIVEN CAVITY)
+    noslip0  = DirichletBC(V, (0.0, 0.0), omega0)  # No Slip boundary conditions on the left wall
+    drive1  =  DirichletBC(V, Uv, omega1)  # No Slip boundary conditions on the upper wall
+    noslip2  = DirichletBC(V, (0.0, 0.0), omega2)  # No Slip boundary conditions on the right part of the flow wall
+    noslip3  = DirichletBC(V, (0.0, 0.0), omega3)  # No Slip boundary conditions on the left part of the flow wall
+    #slip  = DirichletBC(V, sl, omega0)  # Slip boundary conditions on the second part of the flow wall 
+    temp0 =  DirichletBC(W, T_0, omega0)    #Temperature on Omega0 
+    temp2 =  DirichletBC(W, T_0, omega2)    #Temperature on Omega2 
+    temp3 =  DirichletBC(W, T_0, omega3)    #Temperature on Omega3 
+    press2 = DirichletBC(Q, 0.0, omega1)
+
+    #Collect Boundary Conditions
+    bcu = [noslip0, drive1, noslip2, noslip3]
+    bcp = []
+    bcT = [temp0, temp2]
+    bctau = []
+
+    N= len(p0.vector().array())
+
+
+    t = 0.0                  #Time
+    e=6
+    print 'Degree of Elements', d
+    print 'Mesh: %s x %s' %(mm, mm)
+    print 'Timestep size:', dt
+    print 'Finish Time:', Tf
+    print 'Reynolds Number:', Rey
+    print 'Weissenberg Number:', We
+    print 'Viscosity Ratio:', betav
+    print 'DEVSS Momentum Term:', theta
+    print 'DEVSS Temperature Term:', thetat
+    #print 'SUPG Stabilisation:', gammah
+    print 'Diffusion Number:', Di
+    print 'Viscous Heating NUmber:', Vh
+    print 'Speed of sound:', c0
+    print 'lid velocity:', (U*0.5*(1.0+tanh(e*t-3.0)),0)
+    print 'Size of FE Space = %d x d', N
+    #quit()
+
+    # Initial Density Field
+    rho_array = rho0.vector().array()
+    for i in range(len(rho_array)):  
+        rho_array[i] = 1.0
+    rho0.vector()[:] = rho_array 
+
+    # Initial Reciprocal of Density Field
+    irho_array = irho0.vector().array()
+    for i in range(len(irho_array)):  
+        irho_array[i] = 1/rho_array[i]
+    irho0.vector()[:] = irho_array 
+
+    # Initial Temperature Field
+    T_array = T0.vector().array()
+    for i in range(len(T_array)):  
+        T_array[i] = T_0
+    T0.vector()[:] = T_array
+
+      
+    I = Expression((('1.0','0.0'),
+                    ('0.0','1.0')), d=d, degree=d)
+
+
+    #Define Variable Parameters, Strain Rate and other tensors
+    sr0 = 0.5*(grad(u0) + transpose(grad(u0)))
+    sr1 = 0.5*(grad(u1) + transpose(grad(u1)))
+    sr12 = 0.5*(grad(u12) + transpose(grad(u12)))
+    sr = 0.5*(grad(u) + transpose(grad(u)))
+    F0 = (grad(u0)*tau0 + tau0*transpose(grad(u0)))
+    F12 = (grad(u12)*tau + tau*transpose(grad(u12)))
+    F1 = (grad(u1)*tau + tau*transpose(grad(u1)))
+    gamdots = inner(sr1,grad(u1))
+    gamdotp = inner(tau1,grad(u1))
+    thetal = (T)/(T_h-T_0)
+    thetar = (T_0)/(T_h-T_0)
+    thetar = project(thetar,W)
+    theta0 = (T0-T_0)/(T_h-T_0)
+    alpha = 1.0/(rho*Cv)
+
+    weta = We/dt                                                  #Ratio of Weissenberg number to time step
+
+    # Artificial Diffusion Term
+    o= tau1.vector()-tau0.vector()                         # Stress Difference per timestep
+    h= p1.vector()-p0.vector()
+    m=u1.vector()-u0.vector()                              # Velocity Difference per timestep
+    l=T1.vector()-T0.vector()
+    alt=norm(o)/(norm(tau1.vector())+10E-10)
+    alp=norm(h)/(norm(p1.vector())+10E-10)
+    alu=norm(m)/(norm(u1.vector())+10E-10)
+    alT=norm(l, 'linf')/(norm(T1.vector(),'linf')+10E-10)
+    epstau = alt*betav+10E-8                                    #Stabilisation Parameter (Stress)
+    epsp = alp*betav+10E-8                                      #Stabilisation Parameter (Pressure)
+    epsu = alu*betav+10E-8                                      #Stabilisation Parameter (Stress)
+    epsT = 0.1*alT*kappa+10E-8                                  #Stabilisation Parameter (Temperature)
+
+    # TAYLOR GALERKIN METHOD (COMPRESSIBLE VISCOELASTIC)
+
+    # Weak Formulation (DEVSS in weak formulation)
+
+    """DEVSS Stabilisation used in 'Half step' and 'Velocity Update' stages of the Taylor Galerkin Scheme"""
+
+
+
+
+    # TAYLOR GALERKIN METHOD (COMPRESSIBLE VISCOELASTIC)
+
+    """SUPG Diffusion coefficient used in 
+
+       Finite Element Solution of the Navier-Stokes Equations using a SUPG Formulation
+       -Vellando, Puertas Agudo, Marques  (Page 12)"""
+
+
+    """def al1(x):               # Define Diffusion coeficient function
+        return np.tanh(2.0*x)
+    f1=Expression(('1','0'), degree=d, d=d)    
+    f2=Expression(('0','1'), degree=d, d=d)
+
+  
+    speed = dot(u0,u0)        # Determine Speed 
+    speed = project(speed,Q)  # Project Speed onto FE Space 
+
+
+
+    uvals = dot(f1,u0)
+    vvals = dot(f2,u0)
+    uval = project(uvals,Q)
+    vval = project(vvals,Q)
+
+    hxi = (1.0/mm)                 # Uniform Mesh Length of x-axis side   
+    heta = (1.0/mm)                # Uniform Mesh Length of y-axis side
+
+    eta=Function(Q)            # Define Approximation Rule Functions
+    xi=Function(Q)
+
+    u_array = uval.vector().array()
+    v_array = vval.vector().array()
+    eta_array = eta.vector().array()
+    xi_array = xi.vector().array()
+    for i in range(len(u_array)):  
+        eta_array[i] = al1(0.5*u_array[i]/mu_0)
+        xi_array[i] = al1(0.5*v_array[i]/mu_0)
+    eta.vector()[:] = eta_array  
+    xi.vector()[:] = xi_array
+
+    eta=project(eta,Q)
+    xi=project(xi,Q)
+
+    gam = gammah*(hxi*xi*uval+heta*eta*vval)/(2.0*speed+10E-8)
+    gam = project(gam,Q)"""
+    #gam = 0.0
+
+    # SUPG Term
+    #vm=v+gam*dot(u0,grad(v))
+
+    # DEVSS STABILISATION
+
+    #Momentum Equation Stabilisation DEVSS
+
+    D=2.0*(sr0)-2.0/3*div(u0)*I
+    D=project(D,Zc)
+
+    #Temperature Equation Stabilisation DEVSS
+    Dt=grad(T0)
+    Dt=project(Dt,V) 
+
+    #Mixed Finite Element Space
+    #VZc=FunctionSpace(mesh1, V*Zc)
+    #(vm, Rm)=TestFunction(VZc)
+    #(u,D)=Function(VZc)
+
+    #gam=0.0
+
+
+    #Half Step
+    a1=(1.0/(dt/2.0))*inner(Rey*rho0*u,v)*dx+betav*(inner(grad(u),grad(v))*dx+1.0/3*inner(div(u),div(v))*dx)\
+         + theta*(inner(grad(u),grad(v))*dx+1.0/3*inner(div(u),div(v))*dx)
+    L1=(1.0/(dt/2.0))*inner(Rey*rho0*u0,v)*dx-inner(Rey*rho0*grad(u0)*u0,v)*dx+inner(p0,div(v))*dx \
+        -inner(tau0,grad(v))*dx + theta*inner(D,grad(v))*dx
+
+    #Predicted U* Equation
+    a2=(1.0/dt)*inner(Rey*rho0*u,v)*dx + theta*(inner(grad(u),grad(v))*dx+1.0/3*inner(div(u),div(v))*dx)
+    L2=(1.0/dt)*inner(Rey*rho0*u0,v)*dx-0.5*betav*(inner(grad(u0),grad(v))*dx+1.0/3*inner(div(u0),div(v))*dx) \
+        -inner(Rey*rho0*grad(u12)*u12,v)*dx+inner(p0,div(v))*dx-inner(tau0,grad(v))*dx \
+        + theta*inner(D,grad(v))*dx
+
+    # Stress Half Step
+    a3 = (2*We/dt)*inner(tau,R)*dx + We*(inner(dot(u12,grad(tau)),R)*dx - inner(F12, R)*dx+inner(div(u12)*tau,R)*dx)
+    L3 = (2*We/dt)*inner(tau0,R)*dx + 2.0*(1.0-betav)*inner(sr0,R)*dx 
+
+
+    #Continuity Equation 1
+    a5=(1.0/(c0*c0*dt))*inner(p,q)*dx+0.5*dt*inner(grad(p),grad(q))*dx   #Using Dynamic Speed of Sound (c=c(x,t))
+    L5=(1.0/(c0*c0*dt))*inner(p0,q)*dx+0.5*dt*inner(grad(p0),grad(q))*dx-(inner(rho0*div(us),q)*dx+inner(dot(grad(rho0),us),q)*dx)
+
+    #Continuity Equation 2 
+    a6=c0*c0*inner(rho,q)*dx 
+    L6=c0*c0*inner(rho0,q)*dx + inner(p1-p0,q)*dx 
+
+    #Velocity Update
+    a7=(1.0/dt)*inner(Rey*rho0*u,v)*dx+0.5*betav*(inner(grad(u),grad(v))*dx+1.0/3*inner(div(u),div(v))*dx)\
+         + theta*(inner(grad(u),grad(v))*dx+1.0/3*inner(div(u),div(v))*dx)
+    L7=(1.0/dt)*inner(Rey*rho0*us,v)*dx+0.5*(inner(p1,div(v))*dx-inner(p0,div(v))*dx) + theta*inner(D,grad(v))*dx
+
+
+    # Stress Full Step
+    a4 = (We/dt+1.0)*inner(tau,R)*dx + We*(inner(dot(u1,grad(tau)),R)*dx - inner(F1, R)*dx+inner(div(u1)*tau,R)*dx)#+epstau*inner(grad(tau),grad(R))*dx
+    L4 = (We/dt)*inner(tau0,R)*dx + 2.0*(1.0-betav)*inner(sr0,R)*dx 
+
+
+    # Temperature Update (FIRST ORDER)
+    a8 = (1.0/dt)*inner(rho1*thetal,r)*dx + Di*inner(grad(thetal),grad(r))*dx + inner(rho1*dot(u1,grad(thetal)),r)*dx #+ thetat*inner(grad(thetal),grad(r))*dx
+    L8 = (1.0/dt)*inner(rho1*thetar,r)*dx + Di*inner(grad(thetar),grad(r))*dx + inner(rho1*dot(u1,grad(thetar)),r)*dx \
+          + (1.0/dt)*inner(theta0,r)*dx + Vh*inner(gamdots,r)*dx + Bi*inner(grad(theta0),n1*r)*ds(1) #+ thetat*(inner(grad(thetar),grad(r))*dx+inner(Dt,grad(r))*dx)
+          #+ inner(,r)*dx  #Neumann Condition on the outer bearing is encoded in the weak formulation
+
+
+    # Assemble matrices
+    A1 = assemble(a1)
+    A2 = assemble(a2)
+    A3 = assemble(a3)
+    A4 = assemble(a4)
+    A5 = assemble(a5)
+    A6 = assemble(a6)
+    A7 = assemble(a7)
+    A8 = assemble(a8)
+
+
+    # Use amg preconditioner if available
+    prec = "amg" if has_krylov_solver_preconditioner("amg") else "default"
+
+    # Use nonzero guesses - essential for CG with non-symmetric BC
+    parameters['krylov_solver']['nonzero_initial_guess'] = True
+
+    #Folder To Save Plots for Paraview
+    #fv=File("Velocity Results Re="+str(Rey)+"We="+str(We)+"b="+str(betav)+"theta"+str(theta)+"c0="+str(c0)+"/velocity "+str(t)+".pvd")
+ 
+
+    # FEM Solution Convergence Plot
+    x=list()
+    y=list()
+    z=list()
+    zz=list()
+    zl=list()
+
+    # Normal Stress Vector
+    tauxx_vec=tauxx.vector().array()
+
+    # Time-stepping
+    t = dt
+    iter = 0            # iteration counter
+    maxiter = 1000000
+    while t < Tf + DOLFIN_EPS and iter < maxiter:
+        iter += 1
+        print"t = %s,  Iteration = %d, Convergence Failures = %s, Loop = %s" %(t, iter, jj, j)
+
+
+        """if iter >1:
+
+            speed = dot(u0,u0)        # Determine Speed 
+            speed = project(speed,Q)  # Project Speed onto FE Space 
+            uvals = dot(f1,u0)
+            vvals = dot(f2,u0)
+            uval = project(uvals,Q)
+            vval = project(vvals,Q)
+
+            u_array = uval.vector().array()
+            v_array = vval.vector().array()
+            eta_array = eta.vector().array()
+            xi_array = xi.vector().array()
+            for i in range(len(u_array)):  
+                eta_array[i] = al1(u_array[i])
+                xi_array[i] = al1(v_array[i])
+            eta.vector()[:] = eta_array  
+            xi.vector()[:] = xi_array
+
+            eta=project(eta,Q)
+            xi=project(xi,Q)
+
+            gam = gammah*(hxi*xi*uval+heta*eta*vval)/(2.0*speed+10E-20)
+            gam = project(gam,Q)"""
+
+            #print gam.vector().array()
+            
+            #print norm(gam.vector(), 'linf')
+        D=2.0*(sr0)-2.0/3*div(u0)*I
+        D=project(D,Zc)
+        
+
+        # Compute tentative velocity step
+        #begin("Computing tentative velocity")
+        A1 = assemble(a1)
+        b1= assemble(L1)
+        [bc.apply(A1, b1) for bc in bcu]
+        solve(A1, u12.vector(), b1, "bicgstab", "default")
+        end()
+        
+        D=2.0*(sr12)-2.0/3*div(u12)*I
+        D=project(D,Zc)
+        
+        #Compute Predicted U* Equation
+        A2 = assemble(a2)
+        b2 = assemble(L2)
+        [bc.apply(A2, b2) for bc in bcu]
+        solve(A2, us.vector(), b2, "bicgstab", "default")
+        end()
+        #print(norm(us.vector(),'linf'))
+
+        # Stress Half STEP
+        b3=assemble(L3)
+        [bc.apply(A3, b3) for bc in bctau]
+        solve(A3, tau12.vector(), b3, "bicgstab", "default")
+        end()
+
+
+        #Continuity Equation 1
+        A5 = assemble(a5)
+        b5 = assemble(L5)
+        [bc.apply(A5, b5) for bc in bcp]
+        #[bc.apply(p1.vector()) for bc in bcp]
+        solve(A5, p1.vector(), b5, "bicgstab", "default")
+        end()
+
+
+
+
+        #Continuity Equation 2
+        rho1=rho0+(p1-p0)/(c0*c0)
+        rho1=project(rho1,Q)
+
+
+        #Velocity Update
+        A7 = assemble(a7)
+        b7 = assemble(L7)
+        [bc.apply(A7, b7) for bc in bcu]
+        solve(A7, u1.vector(), b7, "bicgstab", "default")
+        end()
+
+        # Stress Full Step
+        b4=assemble(L4)
+        [bc.apply(A4, b4) for bc in bctau]
+        solve(A4, tau1.vector(), b4, "bicgstab", "default")
+        end()
+
+        #Temperature Equation
+        #A8 = assemble(a8)
+        #b8 = assemble(L8)
+        #[bc.apply(A8, b8) for bc in bcT]
+        #solve(A8, T1.vector(), b8, "bicgstab", "default")
+        #end()
+
+        # Calculate Size of Artificial Term
+        o= tau1.vector()-tau0.vector()                         # Stress Difference per timestep
+        h= p1.vector()-p0.vector()
+        m=u1.vector()-u0.vector()                              # Velocity Difference per timestep
+        l=T1.vector()-T0.vector()
+
+
+
+        # Record Error Data 
+        
+        if iter > 1:
+           x.append(t)
+           y.append(norm(h,'linf')/norm(p1.vector()))
+           z.append(norm(o,'linf')/(norm(tau1.vector())+0.0001))
+           zz.append(norm(m,'linf')/norm(u1.vector()))
+
+
+        # Save Plot to Paraview Folder 
+        #for i in range(5000):
+            #if iter== (0.02/dt)*i:
+               #fv << u1
+        #ft << T1
+
+        # Break Loop if code is diverging
+
+        if max(norm(T1.vector(), 'linf'),norm(p1.vector(), 'linf')) > 10E6 or np.isnan(sum(T1.vector().array())):
+            print 'FE Solution Diverging'   #Print message 
+            with open("DEVSS Weissenberg Compressible Stability.txt", "a") as text_file:
+                 text_file.write("Iteration:"+str(j)+"--- Re="+str(Rey)+", We="+str(We)+", t="+str(t)+", dt="+str(dt)+'\n')
+            dt=dt/2                         #Use Smaller timestep 
+            j-=1                            #Extend loop
+            jj+= 1                          # Convergence Failures
+            break
+
+        # Plot solution
+        if t>0.0:
+            #plot(tauxx, title="Normal Stress", rescale=True)
+            plot(p1, title="Pressure", rescale=True)
+            #plot(rho1, title="Density", rescale=True)
+            plot(u1, title="Velocity", rescale=True, mode = "auto")
+            #plot(T1, title="Temperature", rescale=True)
+        
+
+           
+
+        # Move to next time step
+        u0.assign(u1)
+        T0.assign(T1)
+        rho0.assign(rho1)
+        p0.assign(p1)
+        tau0.assign(tau1)
+        Uv.t=t
+        Ret.t=t
+        t += dt
+
+
+    # Plot Pressure Convergence Data
+    fig1=plt.figure()
+    plt.plot(x, y, 'r-', label='Pressure Convergence')
+    plt.xlabel('time(s)')
+    plt.ylabel('||p1-p0||/||p1||')
+    plt.savefig("Compressible Viscoelastic Flow Results/Stability-Convergence/PressureTimestepErrorRe="+str(Rey)+"We="+str(We)+"b="+str(betav)+"c0="+str(c0)+"dt="+str(dt)+".png")
+    plt.clf()
+    plt.plot(x, z, 'r-', label='Stress Timestep Error')
+    plt.xlabel('time(s)')
+    plt.ylabel('||S1-S0||/||S1||')
+    plt.savefig("Compressible Viscoelastic Flow Results/Stability-Convergence/StressCovergenceRe="+str(Rey)+"We="+str(We)+"b="+str(betav)+"c0="+str(c0)+"dt="+str(dt)+".png")
+    plt.clf()
+    plt.plot(x, zz, 'g-', label='Velocity Field Timestep Error')
+    plt.xlabel('time(s)')
+    plt.ylabel('||u1-u0||/||u1||')
+    plt.savefig("Compressible Viscoelastic Flow Results/Stability-Convergence/VelocityCovergenceRe="+str(Rey)+"We="+str(We)+"b="+str(betav)+"c0="+str(c0)+"dt="+str(dt)+".png")
+    plt.clf()
+
+    if max(norm(T1.vector(),'linf'),norm(p1.vector(), 'linf'),norm(u1.vector(), 'linf')) < 10E6:
+
+
+        # Matlab Plot of the Solution at t=Tf
+        rho1=rho_0*rho1
+        rho1=project(rho1,Q)
+        p1=mu_0*(L/U)*p1  #Dimensionalised Pressure
+        p1=project(p1,Q)
+        mplot(rho1)
+        plt.colorbar()
+        plt.savefig("Compressible Viscoelastic Flow Results/Plots-Contours/DensityRe="+str(Rey)+"We="+str(We)+"b="+str(betav)+"c0="+str(c0)+"t="+str(t)+".png")
+        mplot(p1)
+        plt.colorbar()
+        plt.savefig("Compressible Viscoelastic Flow Results/Plots-Contours/PressureRe="+str(Rey)+"We="+str(We)+"b="+str(betav)+"c0="+str(c0)+"t="+str(t)+".png")
+        plt.clf()
+        mplot(T1)
+        plt.colorbar()
+        plt.savefig("Compressible Viscoelastic Flow Results/Plots-Contours/TemperatureRe="+str(Rey)+"We="+str(We)+"b="+str(betav)+"c0="+str(c0)+"t="+str(t)+".png")
+        plt.clf()
+
+        #Plot Contours USING MATPLOTLIB
+        # Scalar Function code
+
+
+        x = Expression('x[0]', d=d, degree=d)  #GET X-COORDINATES LIST
+        y = Expression('x[1]', d=d, degree=d)  #GET Y-COORDINATES LIST
+        pvals = p1.vector().array() # GET SOLUTION p= p(x,y) list
+        Tvals = T1.vector().array() # GET SOLUTION T= T(x,y) list
+        rhovals = rho1.vector().array() # GET SOLUTION p= p(x,y) list
+        tauxxvals=tauxx.vector().array()
+        xyvals = mesh1.coordinates()     # CLEAN THIS UP!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        xvalsq = interpolate(x, Q)#xyvals[:,0]
+        yvalsq= interpolate(y, Q)#xyvals[:,1]
+        xvalsw = interpolate(x, W)#xyvals[:,0]
+        yvalsw= interpolate(y, W)#xyvals[:,1]
+
+        xvals = xvalsq.vector().array()
+        yvals = yvalsq.vector().array()
+
+
+        xx = np.linspace(x0,x1)
+        yy = np.linspace(y0,y1)
+        XX, YY = np.meshgrid(xx,yy)   # (x,y) coordinate data formatted so that it can be used by plt.contour()
+        pp = mlab.griddata(xvals, yvals, pvals, xx, yy, interp='nn') # u(x,y) data so that it can be used by 
+        dd = mlab.griddata(xvals, yvals, rhovals, xx, yy, interp='nn') # u(x,y) data so that it can be used by 
+
+        plt.contour(XX, YY, dd, 25)
+        plt.title('Density Contours')   # DENSITY CONTOUR PLOT
+        plt.colorbar() 
+        plt.savefig("Compressible Viscoelastic Flow Results/Plots-Contours/DensityContoursRe="+str(Rey)+"We="+str(We)+"b="+str(betav)+"c0="+str(c0)+"t="+str(t)+".png")
+        plt.clf()
+
+        plt.contour(XX, YY, pp, 25)
+        plt.title('Pressure Contours')   # PRESSURE CONTOUR PLOT
+        plt.colorbar() 
+        plt.savefig("Compressible Viscoelastic Flow Results/Plots-Contours/PressureContoursRe="+str(Rey)+"We="+str(We)+"b="+str(betav)+"c0="+str(c0)+"t="+str(t)+".png")
+        plt.clf()
+
+        """xvals = xvalsw.vector().array()
+        yvals = yvalsw.vector().array()
+
+        TT = mlab.griddata(xvals, yvals, Tvals, xx, yy, interp='nn') 
+        plt.contour(XX, YY, TT, 20) 
+        plt.title('Temperature Contours')   # TEMPERATURE CONTOUR PLOT
+        plt.colorbar() 
+        plt.savefig("Compressible Viscoelastic Flow Results/Plots-Contours/TemperatureContoursRe="+str(Re)+"We="+str(We)+"b="+str(betav)+"c0="+str(c0)+"t="+str(t)+".png")
+        plt.clf()
+
+
+        normstress = mlab.griddata(xvals, yvals, tauxxvals, xx, yy, interp='nn')
+
+        plt.contour(XX, YY, normstress, 20) 
+        plt.title('Stress Contours')   # NORMAL STRESS CONTOUR PLOT
+        plt.colorbar() 
+        plt.savefig("Compressible Viscoelastic Flow Results/Plots-Contours/StressContoursRe="+str(Re)+"We="+str(We)+"b="+str(betav)+"c0="+str(c0)+"t="+str(t)+".png")
+        plt.clf()"""
+
+
+
+        #Plot Contours USING MATPLOTLIB
+        # Vector Function code
+
+        u1=U*u1  # DIMENSIONALISED VELOCITY
+        u1=project(u1,V)
+        g=list()
+        h=list()
+        n= mesh1.num_vertices()
+        print(u1.vector().array())   # u is the FEM SOLUTION VECTOR IN FUNCTION SPACE 
+        for i in range(len(u1.vector().array())/2-1):
+            g.append(u1.vector().array()[2*i+1])
+            h.append(u1.vector().array()[2*i])
+
+        uvals = np.asarray(h) # GET SOLUTION (u,v) -> u= u(x,y) list
+        vvals = np.asarray(g) # GET SOLUTION (u,v) -> v= v(x,y) list
+
+
+        xy = Expression(('x[0]','x[1]'), d=d, degree=d)  #GET MESH COORDINATES LIST
+        xyvalsv = interpolate(xy, V)
+
+        q=list()
+        r=list()
+
+        for i in range(len(u1.vector().array())/2-1):
+           q.append(xyvalsv.vector().array()[2*i+1])
+           r.append(xyvalsv.vector().array()[2*i])
+
+        xvals = np.asarray(r)
+        yvals = np.asarray(q)
+
+        # Interpoltate velocity field data onto matlab grid
+        uu = mlab.griddata(xvals, yvals, uvals, xx, yy, interp='nn') 
+        vv = mlab.griddata(xvals, yvals, vvals, xx, yy, interp='nn') 
+
+        # Interpoltate velocity field data onto matlab grid
+        uu = mlab.griddata(xvals, yvals, uvals, xx, yy, interp='nn') 
+        vv = mlab.griddata(xvals, yvals, vvals, xx, yy, interp='nn') 
+
+        #Determine Speed 
+        speed = np.sqrt(uu*uu+ vv*vv)
+
+        plot3 = plt.figure()
+        plt.streamplot(XX, YY, uu, vv,  
+                       density=3,              
+                       color=speed,  
+                       cmap=cm.gnuplot,                         # colour map
+                       linewidth=1.0)                           # line thickness
+                                                                # arrow size
+        plt.colorbar()                                          # add colour bar on the right
+        plt.title('Lid Driven Cavity Flow')
+        plt.savefig("Compressible Viscoelastic Flow Results/Plots-Contours/VelocityContoursRe="+str(Rey)+"We="+str(We)+"b="+str(betav)+"c0="+str(c0)+"t="+str(t)+".png")   
+        plt.clf()                                                           # display the plot
+
+
+    plt.close()
+
+
+    if dt < tol:
+       j=loopend+1
+       break
+
+
+    # Update Control Variables 
+    """if max(norm(u1.vector(), 'linf'),norm(p1.vector(), 'linf'),norm(u1.vector(), 'linf')) < 10E6 and np.isfinite(sum(u1.vector().array())):
+        with open("Weissenberg Compressible Stability.txt", "a") as text_file:
+             text_file.write("Solution Converges Re"+str(Rey)+", We="+str(We)+", dt="+str(dt)+'\n')
+        dt = 0.064  #Time Stepping                        #Go back to Original Timestep
+        #gammah=10E0
+        jj=0
+        if U==50.0:
+            U=2.0*U
+            lambda1=1.0/U
+        elif U==25.0:
+            U=2.0*U
+            lambda1=1.0/U
+        elif U==20.0:
+            U=2.5*U
+            lambda1=1.0/U
+        elif U==15.0:
+            U=2.0*U
+            lambda1=1.0/U
+        elif U==10.0:
+            U=1.5*U
+            lambda1=1.0/U
+        elif U==5.0:
+            U=2.0*U
+            lambda1=1.0/U
+        elif U==2.5:
+            U=2.0*U
+            lambda1=1.0/U
+        elif U==1.0:
+            U=2.5*U
+            lambda1=1.0/U
+        elif U==0.5:
+            U=2.0*U
+            lambda1=1.0/U
+        elif U==0.25:
+            U=2.0*U
+            lambda1=1.0/U"""
+
+         
+
+    if max(norm(T1.vector(), 'linf'),norm(p1.vector(), 'linf')) < 10E6:
+       with open("DEVSS Weissenberg Compressible Stability.txt", "a") as text_file:
+            text_file.write("Solution Converges Re"+str(Rey)+", We="+str(We)+", dt="+str(dt)+'\n')
+       dt = 0.064
+       jj=0
+       if lambda_1==1.0*10E1:
+            lambda_1=2.0*lambda_1
+       elif lambda_1==4.0*10E0:
+            lambda_1=2.5*lambda_1
+       elif lambda_1==2.0*10E0:
+            lambda_1=2*lambda_1
+       elif lambda_1==1.0*10E0:
+            lambda_1=2*lambda_1
+       elif lambda_1==4.0*10E-1:
+            lambda_1=2.5*lambda_1
+       elif lambda_1==2.0*10E-1:
+            lambda_1=2*lambda_1
+       elif lambda_1==2.0*10E-2:
+            lambda_1=10*lambda_1
+       elif lambda_1==2.0*10E-3:
+            lambda_1=10*lambda_1
+       elif lambda_1==1.0*10E-2:
+            lambda_1=2*lambda_1
+

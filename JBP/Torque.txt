@@ -1,0 +1,115 @@
+Re=50, We=0.1, Ma=0.001, t=10.0al=0.1, Stability=33.5779840785
+Re=50, We=0.1, Ma=0.001, t=10.0al=0.1, Stability=33.3517217658
+Re=50, We=0.25, Ma=0.001, t=10.0al=0.1, Stability=62.6194683385
+Re=50, We=0.5, Ma=0.001, t=10.0al=0.1, Stability=148.163277303
+Re=50, We=0.75, Ma=0.001, t=10.0al=0.1, Stability=219.386547891
+Re=50, We=0.1, Ma=0.001, t=10.0al=0.5, Stability=30.4372941249
+Re=50, We=0.1, Ma=0.001, t=10.0al=0.5, Stability=30.1371481527
+Re=50, We=0.25, Ma=0.001, t=10.0al=0.5, Stability=41.0179511665
+Re=50, We=0.5, Ma=0.001, t=10.0al=0.5, Stability=77.0239634438
+Re=50, We=0.75, Ma=0.001, t=0.05al=0.1, Stability=0.0585378230093
+Re=50, We=0.75, Ma=0.001, t=0.05al=0.1, Stability=0.0585378229869
+Re=50, We=0.75, Ma=0.001, t=10.0al=0.5, Stability=109.328177483
+Re=50, We=0.75, Ma=0.001, t=5.0005al=0.1, Stability=28.8907951043
+Re=50, We=0.1, Ma=0.001, t=10.0al=0.9, Stability=28.412587885
+Re=50, We=0.1, Ma=0.001, t=10.0al=0.9, Stability=28.0634205391
+Re=50, We=0.25, Ma=0.001, t=10.0al=0.9, Stability=32.3313760257
+Re=50, We=0.1, Ma=0.001, t=8.0005al=0.1, Stability=26.27772577
+
+
+ Experimants with Re, We and Ma scaled for 15W40 oil
+
+
+Re=50, We=0.001, Ma=0.001, t=8.0005al=0.1, Stability=61.9823924812
+Re=50, We=0.1, Ma=0.001, t=8.0005al=0.1, Stability=69.2449669613
+Re=50, We=0.5, Ma=0.001, t=8.0005al=0.1, Stability=484.500664837
+Re=50, We=1.0, Ma=0.001, t=8.0005al=0.1, Stability=1463.36791912
+Re=50, We=2.0, Ma=0.001, t=8.0005al=0.1, Stability=1967.73898602
+Re=50, We=0.001, Ma=0.001, t=8.0005al=0.1, Stability=61.9823924812
+Re=50, We=0.1, Ma=0.001, t=8.0005al=0.1, Stability=69.2449669613
+Re=50, We=0.5, Ma=0.001, t=8.0005al=0.1, Stability=484.500664837
+Re=50, We=1.0, Ma=0.001, t=8.0005al=0.1, Stability=1463.36791912
+Re=50, We=2.0, Ma=0.001, t=8.0005al=0.1, Stability=1967.73898602
+Re=50, We=0.001, Ma=0.001, t=8.0005al=0.1, Stability=61.9823924812
+Re=50, We=0.1, Ma=0.001, t=8.0005al=0.1, Stability=69.2449669613
+Re=50, We=0.5, Ma=0.001, t=8.0005al=0.1, Stability=484.500664837
+Re=50, We=1.0, Ma=0.001, t=8.0005al=0.1, Stability=1463.36791912
+Re=50, We=2.0, Ma=0.001, t=8.0005al=0.1, Stability=1967.73898602
+Re=50, We=0.001, Ma=0.001, t=8.0005al=0.1, Stability=61.9823924812
+Re=100, We=0.001, Ma=0.01, t=8.0005al=0.1, Stability=62.1637141789
+Re=100, We=0.1, Ma=0.01, t=8.0005al=0.1, Stability=69.4177327194
+Re=100, We=0.5, Ma=0.01, t=8.0005al=0.1, Stability=501.706946778
+Re=100, We=1.0, Ma=0.01, t=8.0005al=0.1, Stability=1473.24955045
+Re=100, We=2.0, Ma=0.01, t=8.0005al=0.1, Stability=1973.61548615
+Re=100, We=0.001, Ma=0.01, t=8.0005al=0.1, Stability=62.1637141789
+Re=100, We=0.1, Ma=0.01, t=8.0005al=0.1, Stability=69.4177327194
+Re=200, We=0.001, Ma=0.02, t=8.0005al=0.1, Stability=61.9856772345
+Re=200, We=0.1, Ma=0.02, t=8.0005al=0.1, Stability=69.9296860288
+Re=200, We=0.5, Ma=0.02, t=8.0005al=0.1, Stability=534.416536059
+Re=200, We=1.0, Ma=0.02, t=8.0005al=0.1, Stability=1492.00111948
+Re=200, We=2.0, Ma=0.02, t=8.0005al=0.1, Stability=1984.75894431
+Re=200, We=0.001, Ma=0.03, t=8.0005al=0.1, Stability=63.3228680381
+Re=200, We=0.1, Ma=0.03, t=8.0005al=0.1, Stability=70.5973649729
+Re=200, We=0.5, Ma=0.03, t=8.0005al=0.1, Stability=561.155433459
+Re=200, We=1.0, Ma=0.03, t=8.0005al=0.1, Stability=1514.1422005
+Re=200, We=2.0, Ma=0.03, t=8.0005al=0.1, Stability=2006.744204
+Re=200, We=0.001, Ma=0.04, t=8.0005al=0.1, Stability=63.360704645
+Re=200, We=0.1, Ma=0.04, t=8.0005al=0.1, Stability=71.3264770923
+Re=200, We=0.5, Ma=0.04, t=8.0005al=0.1, Stability=584.260501417
+Re=200, We=1.0, Ma=0.04, t=8.0005al=0.1, Stability=1533.70643546
+Re=200, We=2.0, Ma=0.04, t=8.0005al=0.1, Stability=2023.52796961
+Re=25, We=0.001, Ma=0.0025, t=8.0005al=0.1, Stability=47.8162720535
+Re=25, We=0.1, Ma=0.0025, t=8.0005al=0.1, Stability=54.3339684815
+Re=25, We=0.5, Ma=0.0025, t=8.0005al=0.1, Stability=254.229833151
+Re=25, We=1.0, Ma=0.0025, t=8.0005al=0.1, Stability=1159.32825301
+Re=25, We=2.0, Ma=0.0025, t=8.0005al=0.1, Stability=2035.58198644
+Re=50.0, We=0.001, Ma=0.005, t=8.0005al=0.1, Stability=48.1237324106
+Re=50.0, We=0.1, Ma=0.005, t=8.0005al=0.1, Stability=54.3643391653
+Re=50.0, We=0.5, Ma=0.005, t=8.0005al=0.1, Stability=256.301424294
+Re=50.0, We=1.0, Ma=0.005, t=8.0005al=0.1, Stability=1169.38954941
+Re=50.0, We=2.0, Ma=0.005, t=8.0005al=0.1, Stability=2036.29215932
+Re=100, We=0.001, Ma=0.01, t=8.0005al=0.1, Stability=48.6570619798
+Re=100, We=0.1, Ma=0.01, t=8.0005al=0.1, Stability=54.4638681744
+Re=100, We=0.25, Ma=0.01, t=8.0005al=0.1, Stability=69.5871714734
+Re=100, We=0.5, Ma=0.01, t=8.0005al=0.1, Stability=260.474286432
+Re=100, We=1.0, Ma=0.01, t=8.0005al=0.1, Stability=1192.34805497
+Re=200.0, We=0.001, Ma=0.02, t=8.0005al=0.1, Stability=49.7621372736
+Re=200.0, We=0.1, Ma=0.02, t=8.0005al=0.1, Stability=55.0414627752
+Re=200.0, We=0.25, Ma=0.02, t=8.0005al=0.1, Stability=70.1285728413
+Re=200.0, We=0.5, Ma=0.02, t=8.0005al=0.1, Stability=267.570499746
+Re=200.0, We=1.0, Ma=0.02, t=8.0005al=0.1, Stability=1238.39654948
+Re=25, We=0.5, Ma=0.0025, t=10.0al=0.1, Stability=322.884671516
+Re=50, We=0.5, Ma=0.005, t=10.0al=0.1, Stability=326.656398808
+Re=100, We=0.5, Ma=0.01, t=10.0al=0.1, Stability=333.698204188
+Re=200, We=0.5, Ma=0.02, t=10.0al=0.1, Stability=346.062447637
+Re=25, We=0.5, Ma=0.0025, t=5.0005al=0.1, Stability=297.119126172
+Re=50, We=1e-05, Ma=3e-16, t=5.0005al=0.1, Stability=48.0556987396
+Re=50, We=0.1, Ma=0.05, t=5.0005al=0.1, Stability=54.6040141314
+Re=50, We=1e-05, Ma=3e-16, t=0.05al=0.1, Stability=0.0978065256375
+Re=50, We=0.1, Ma=0.05, t=0.05al=0.1, Stability=0.0881508938021
+Re=50, We=1e-05, Ma=3e-16, t=0.05al=0.1, Stability=0.0689548436279
+Re=50, We=0.1, Ma=0.05, t=0.05al=0.1, Stability=0.0878697526217
+Re=50, We=1e-05, Ma=3e-16, t=5.0005al=0.1, Stability=47.6902949919
+Re=50, We=1e-05, Ma=3e-16, t=0.05al=0.1, Stability=0.0717386410961
+Re=50, We=0.1, Ma=0.05, t=0.05al=0.1, Stability=0.0866779061492
+Re=50, We=1e-05, Ma=3e-16, t=0.05al=0.1, Stability=-0.0717407163453
+Re=50, We=0.1, Ma=0.05, t=0.05al=0.1, Stability=-0.0866988373354
+Re=50, We=1e-05, Ma=3e-16, t=0.1al=0.1, Stability=-0.156942708626
+Re=50, We=1e-05, Ma=3e-16, t=0.1al=0.1, Stability=0.156943431245
+Re=50, We=0.1, Ma=0.05, t=0.1al=0.1, Stability=0.201931888953
+Re=50, We=1e-05, Ma=3e-16, t=0.01al=0.1, Stability=0.0560135514285
+Re=50, We=0.1, Ma=0.05, t=0.01al=0.1, Stability=0.077302078828
+Re=50, We=1e-05, Ma=3e-16, t=0.01al=0.1, Stability=0.0560135514285
+Re=50, We=0.1, Ma=0.05, t=0.01al=0.1, Stability=0.077302078828
+Re=50, We=1e-05, Ma=3e-16, t=5.0005al=0.1, Stability=47.5558797942
+Re=50, We=0.1, Ma=0.05, t=5.0005al=0.1, Stability=54.5905388153
+Re=50, We=1e-05, Ma=3e-16, t=5.0005al=0.1, Stability=47.5558797942
+Re=50, We=0.1, Ma=0.05, t=5.0005al=0.1, Stability=54.5905388153
+
+
+NEW MODEL (L=5)
+
+
+
+
+

@@ -1,0 +1,107 @@
+
+
+
+
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0, t=6.0004, Drag Factor=1.180291361
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.05, t=6.0004, Drag Factor=1.19048621918
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.1, t=6.0004, Drag Factor=1.22338982215
+Re=0.0, We=2.25beta0.5, L=5.0, lambda=0, t=6.0004, Drag Factor=1.53430758692
+
+Beta_s = 0.4
+
+
+Re=0.0, We=0.0001beta0.5, L=5.0, lambda=0beta_s0.4, t=6.0004, Drag Factor=1.0000
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0beta_s0.4, t=6.0004, Drag Factor=1.5408
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.05beta_s0.4, t=6.0004, Drag Factor=1.58504
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.1beta_s0.4, t=6.0004, Drag Factor=1.67988
+Re=0.0, We=0.0001beta0.5, L=5.0, lambda=0beta_s0.4, t=6.0004, Drag Factor=1.0000
+
+Re=0.0, We=1e-05beta0.5, L=5.0, lambda=0beta_s0.4, t=10.0, Drag Factor=1.000000
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0beta_s0.4, t=10.0, Drag Factor=1.79660787752
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.05beta_s0.4, t=10.0, Drag Factor=1.75293755302
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.1beta_s0.4, t=10.0, Drag Factor=2.23870928014
+Re=0.0, We=1e-05beta0.5, L=5.0, lambda=0beta_s0.4, t=10.0, Drag Factor=1.0
+Re=0.0, We=2.25beta0.5, L=5.0, lambda=0beta_s0.4, t=10.0, Drag Factor=0.897031822576
+Re=0.0, We=2.25beta0.5, L=5.0, lambda=0.05beta_s0.4, t=10.0, Drag Factor=0.900545063125
+Re=0.0, We=2.25beta0.5, L=5.0, lambda=0.1beta_s0.4, t=10.0, Drag Factor=0.91138154671
+Re=0.0, We=1e-05beta0.5, L=5.0, lambda=0beta_s0.4, t=10.0, Drag Factor=1.0
+Re=0.0, We=1e-05beta0.5, L=100.0, lambda=0beta_s0.2, t=10.0, Drag Factor=2.62296028502
+Re=0.0, We=0.65beta0.5, L=2.0, lambda=0beta_s0.5, t=10.0006291979, Drag Factor=1.13074711619
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0beta_s0.5, t=10.0006291979, Drag Factor=1.04990177866
+
+
+30/06/18
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.0beta_s0.4, t=8.00017274782, Drag Factor=1.3624161598
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.1beta_s0.4, t=8.00017274782, Drag Factor=1.52373262555
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.2beta_s0.4, t=8.00017274782, Drag Factor=2.12836762649
+Re=0.0, We=0.01beta1.0, L=5.0, lambda=0.0beta_s0.4, t=8.00017274782, Drag Factor=0.999999748008
+Re=0.0, We=0.01beta0.5, L=5.0, lambda=0.0beta_s0.4, t=8.00017274782, Drag Factor=0.831200104663
+Re=0.0, We=0.01beta0.5, L=5.0, lambda=0.1beta_s0.4, t=8.00017274782, Drag Factor=0.847130203067
+Re=0.0, We=0.01beta0.5, L=5.0, lambda=0.2beta_s0.4, t=8.00017274782, Drag Factor=0.903716195949
+Re=0.0, We=0.01beta1.0, L=5.0, lambda=0.0beta_s0.4, t=8.00017274782, Drag Factor=0.999961921833
+
+
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.0beta_s0.4, t=6.00001416267, Drag Factor=1.28653645727
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.05beta_s0.4, t=6.00001416267, Drag Factor=1.32384448566
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.1beta_s0.4, t=6.00001416267, Drag Factor=1.4396562256
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.15beta_s0.4, t=6.00001416267, Drag Factor=1.64141291383
+
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.0beta_s0.4, t=6.00001416267, Drag Factor=1.31900688952
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.05beta_s0.4, t=6.00001416267, Drag Factor=1.35544845194
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.1beta_s0.4, t=6.00001416267, Drag Factor=1.4762102483
+Re=0.0, We=0.65beta0.5, L=5.0, lambda=0.15beta_s0.4, t=6.00001416267, Drag Factor=1.69549838767
+Re=0.0, We=0.0001beta1.0, L=5.0, lambda=0.0beta_s0.4, t=6.00001416267, Drag Factor=1.00000038388
+Re=0.0, We=0.0001beta0.5, L=5.0, lambda=0.0beta_s0.4, t=6.00001416267, Drag Factor=0.75457273339
+Re=0.0, We=0.0001beta0.5, L=5.0, lambda=0.05beta_s0.4, t=6.00001416267, Drag Factor=0.751480067958
+Re=0.0, We=0.0001beta0.5, L=5.0, lambda=0.1beta_s0.4, t=6.00001416267, Drag Factor=0.767429843541
+Re=0.0, We=0.0001beta0.5, L=5.0, lambda=0.15beta_s0.4, t=6.00001416267, Drag Factor=0.763567496535
+Re=0.0, We=0.0001beta1.0, L=5.0, lambda=0.0beta_s0.4, t=6.00001416267, Drag Factor=0.999999896775
+Re=0.0, We=0.01beta1.0, L=1000.0, lambda=0beta_s0.4, t=0.0230796405842, Drag Factor=-0.192143200105
+Re=0.0, We=0.65beta0.5, L=10.0, lambda=0beta_s0.4, t=6.00001416267, Drag Factor=2.74207302347
+Re=0.0, We=0.65beta0.5, L=20.0, lambda=0beta_s0.4, t=6.00001416267, Drag Factor=7.56834763405
+
+Re=0.0, We=0.5beta0.5, L=20.0, lambda=0beta_s0.4, t=6.0000910948, Drag Factor=2.26826728859
+Re=0.0, We=0.5beta0.5, L=50.0, lambda=0beta_s0.4, t=6.0000910948, Drag Factor=2.92837651479
+Re=0.0, We=0.5beta0.5, L=100.0, lambda=0beta_s0.4, t=6.0000910948, Drag Factor=3.06418110966
+Re=0.0, We=0.01beta1.0, L=1000.0, lambda=0beta_s0.4, t=0.0153864270561, Drag Factor=-0.189603961109
+Re=0.0, We=0.01beta1.0, L=1000.0, lambda=0beta_s0.4, t=0.0153864270561, Drag Factor=-0.189603961109
+Re=0.0, We=0.01beta1.0, L=1000.0, lambda=0beta_s0.4, t=0.0307728541122, Drag Factor=-0.23991305588
+Re=0.0, We=0.01beta1.0, L=1000.0, lambda=0beta_s0.4, t=0.0307728541122, Drag Factor=-0.23991305588
+Re=0.0, We=0.01beta1.0, L=1000.0, lambda=0beta_s0.4, t=0.0769321352805, Drag Factor=-0.37219390838
+Re=0.0, We=0.2beta0.5, L=100.0, lambda=0beta_s0.4, t=0.0769321352805, Drag Factor=1.27811373033
+Re=0.0, We=0.2beta0.5, L=80.0, lambda=0beta_s0.4, t=0.0769321352805, Drag Factor=1.27811372807
+Re=0.0, We=0.2beta0.5, L=100.0, lambda=0beta_s0.4, t=6.00070655188, Drag Factor=0.77869139628
+Re=0.0, We=0.01beta1.0, L=1000.0, lambda=0beta_s0.4, t=6.0000910948, Drag Factor=1.0
+Re=0.0, We=0.2beta0.5, L=80.0, lambda=0beta_s0.4, t=6.00070655188, Drag Factor=0.778745267821
+Re=0.0, We=0.2beta0.5, L=50.0, lambda=0beta_s0.4, t=6.00070655188, Drag Factor=0.778780463056
+Re=0.0, We=0.2beta0.5, L=20.0, lambda=0beta_s0.4, t=6.00070655188, Drag Factor=0.779351323001
+Re=0.0, We=0.01beta1.0, L=1000.0, lambda=0beta_s0.4, t=6.00070655188, Drag Factor=1.0
+Re=0.0, We=0.2beta0.5, L=100.0, lambda=0beta_s0.4, t=6.00070655188, Drag Factor=0.77869139628
+Re=0.0, We=0.2beta0.5, L=80.0, lambda=0beta_s0.4, t=6.00070655188, Drag Factor=0.778745267821
+Re=0.0, We=0.2beta0.5, L=50.0, lambda=0beta_s0.4, t=6.00070655188, Drag Factor=0.778780463056
+Re=0.0, We=0.2beta0.5, L=20.0, lambda=0beta_s0.4, t=6.00070655188, Drag Factor=0.779351323001
+Re=0.0, We=0.01beta1.0, L=1000.0, lambda=0beta_s0.4, t=6.00070655188, Drag Factor=1.0
+
+Re=0.0, We=0.2beta0.5, L=5.0, lambda=0.0beta_s0.2, t=6.00014064325, Drag Factor=0.896507900538
+Re=0.0, We=0.2beta0.5, L=5.0, lambda=0.05beta_s0.2, t=6.00014064325, Drag Factor=0.900534404056
+Re=0.0, We=0.1beta0.5, L=50, lambda=0.05beta_s0.2, t=6.00014064325, Drag Factor=0.918243121652
+Re=0.0, We=0.2beta0.5, L=5.0, lambda=0.1beta_s0.2, t=6.00014064325, Drag Factor=0.914948961082
+Re=0.0, We=0.2beta0.5, L=5.0, lambda=0.15beta_s0.2, t=6.00014064325, Drag Factor=0.940131165438
+Re=0.0, We=0.25beta0.5, L=50, lambda=0.05beta_s0.2, t=6.00014064325, Drag Factor=0.88673360234
+Re=0.0, We=0.5beta0.5, L=5.0, lambda=0.0beta_s0.2, t=0.0603954869851, Drag Factor=1.0
+Re=0.0, We=0.5beta0.5, L=5.0, lambda=0.0beta_s0.2, t=0.0603954869851, Drag Factor=1.0
+Re=0.0, We=0.5beta0.5, L=5.0, lambda=0.0beta_s0.2, t=0.0603954869851, Drag Factor=1.0
+Re=0.0, We=0.5beta0.5, L=5.0, lambda=0.0beta_s0.2, t=0.0603954869851, Drag Factor=1.0
+Re=0.0, We=0.5beta0.5, L=5.0, lambda=0.0beta_s0.2, t=6.00029163197, Drag Factor=1.0
+Re=0.0, We=0.5beta0.5, L=5.0, lambda=0.0beta_s0.2, t=6.00029163197, Drag Factor=1.0
+Re=0.0, We=0.5beta0.5, L=5.0, lambda=0.0beta_s0.2, t=6.00029163197, Drag Factor=1.0
+Re=0.0, We=0.5beta0.5, L=5.0, lambda=0.0beta_s0.2, t=6.00029163197, Drag Factor=1.0
+
+Re=0.0, We=0.5beta0.5, L=5.0, lambda=0.0beta_s0.2, t=6.00029163197, Drag Factor=0.815466656809
+Re=0.0, We=0.5beta0.5, L=5.0, lambda=0.05beta_s0.2, t=6.00029163197, Drag Factor=0.818147098321
+Re=0.0, We=0.5beta0.5, L=5.0, lambda=0.1beta_s0.2, t=6.00029163197, Drag Factor=0.82632430476
+Re=0.0, We=0.5beta0.5, L=5.0, lambda=0.15beta_s0.2, t=6.00029163197, Drag Factor=0.844066740535
+Re=0.0, We=0.3beta0.5, L=100.0, lambda=0beta_s0.2, t=6.00014064325, Drag Factor=0.865236767385
+Re=0.0, We=0.3beta0.5, L=80.0, lambda=0beta_s0.2, t=6.00014064325, Drag Factor=0.865025656068
+Re=0.0, We=0.3beta0.5, L=50.0, lambda=0beta_s0.2, t=6.00014064325, Drag Factor=0.866061587544
+Re=0.0, We=0.3beta0.5, L=20.0, lambda=0beta_s0.2, t=6.00014064325, Drag Factor=0.866088583736
